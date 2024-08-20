@@ -24,16 +24,16 @@ class Meet(models.Model):
     """
     category = models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name="Категория")
     title = models.CharField(max_length=20, verbose_name="Название")
-    date = models.DateField(default=timezone.now, verbose_name="Дата")
-    time = models.TimeField(default=timezone.now, verbose_name="Время")
+    start_date = models.DateField(default=timezone.now, verbose_name="Дата")
+    start_time = models.TimeField(default=timezone.now, verbose_name="Время")
 
     def __str__(self):
-        return f"{self.title} - {self.date} {self.time}"
+        return f"{self.title} - {self.start_date} {self.start_time}"
 
     class Meta:
         verbose_name = 'Мит'
         verbose_name_plural = 'Миты'
-        ordering = ['date', 'time', 'title']
+        ordering = ['start_date', 'start_time', 'title']
 
 
 class MeetParticipant(models.Model):
@@ -49,6 +49,13 @@ class MeetParticipant(models.Model):
     meet = models.ForeignKey(Meet, on_delete=models.PROTECT, verbose_name="Мит")
     user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name="Пользователь")
 
+    def __str__(self):
+        return f"{self.user.username} - {self.status} на {self.meet.title}"
+
+    class Meta:
+        verbose_name = 'Участник мита'
+        verbose_name_plural = 'Участники мита'
+        ordering = ['meet', 'user']
 
 
 
