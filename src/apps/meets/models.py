@@ -1,16 +1,19 @@
+from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
-from django.core.validators import RegexValidator
 
-from apps.users.models import User
 from apps.meets.choice_classes import StatusChoice
+from apps.users.models import User
 
 
 class Category(models.Model):
     """
     Модель категория митов
     """
-    name = models.CharField(max_length=100, unique=True, verbose_name="Категория")
+
+    name = models.CharField(
+        max_length=100, unique=True, verbose_name="Категория"
+    )
 
     class Meta:
         db_table = "category"
@@ -26,7 +29,10 @@ class Meet(models.Model):
     """
     Модель самих митов, связана с категорией
     """
-    category = models.ForeignKey("Category", on_delete=models.PROTECT, verbose_name="Категория")
+
+    category = models.ForeignKey(
+        "Category", on_delete=models.PROTECT, verbose_name="Категория"
+    )
     title = models.CharField(
         max_length=20,
         unique=True,
@@ -35,13 +41,18 @@ class Meet(models.Model):
             RegexValidator(
                 regex=r"^[a-zA-Zа-яА-Я\s]*$",
                 message="Допускаются только буквы латиницы и кириллицы.",
-                code="invalid_name"
+                code="invalid_name",
             ),
         ],
     )
     start_date = models.DateField(default=timezone.now, verbose_name="Дата")
     start_time = models.TimeField(default=timezone.now, verbose_name="Время")
-    participants = models.ManyToManyField(User, through="MeetParticipant", related_name="meets", verbose_name="Участники")
+    participants = models.ManyToManyField(
+        User,
+        through="MeetParticipant",
+        related_name="meets",
+        verbose_name="Участники",
+    )
 
     class Meta:
         db_table = "meets"
@@ -57,9 +68,19 @@ class MeetParticipant(models.Model):
     """
     Промежуточная модель, связывающая миты и участников
     """
-    meet = models.ForeignKey("Meet", on_delete=models.CASCADE, verbose_name="Мит")
-    user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name="Участник")
-    status = models.CharField(max_length=10, choices=StatusChoice.choices, default=StatusChoice.PRESENT, verbose_name="Статус")
+
+    meet = models.ForeignKey(
+        "Meet", on_delete=models.CASCADE, verbose_name="Мит"
+    )
+    user = models.ForeignKey(
+        User, on_delete=models.PROTECT, verbose_name="Участник"
+    )
+    status = models.CharField(
+        max_length=10,
+        choices=StatusChoice.choices,
+        default=StatusChoice.PRESENT,
+        verbose_name="Статус",
+    )
 
     class Meta:
         db_table = "meet_participants"
@@ -72,10 +93,6 @@ class MeetParticipant(models.Model):
         return StatusChoice.get_color(self.status)
 
     def __str__(self):
-        return f"{self.user.username} - {self.status_color} на {self.meet.title}"
-
-
-
-
-
-
+        return (
+            f"{self.user.username} - {self.status_color} на {self.meet.title}"
+        )

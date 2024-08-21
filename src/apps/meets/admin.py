@@ -28,5 +28,3 @@ class MeetParticipantAdmin(admin.ModelAdmin):
     list_display = ("user", "meet", "status")
     list_display_links = ("user", "meet", "status")
     search_fields = ("user", "meet")
-
-
