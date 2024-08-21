@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Feature, Project, Tags, Task, Color
+from .models import Color, Feature, Project, Tags, Task
 
 
 @admin.register(Color)

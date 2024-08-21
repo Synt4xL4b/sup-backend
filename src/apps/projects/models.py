@@ -6,11 +6,7 @@ from django.shortcuts import redirect
 from django.template.defaultfilters import slugify
 from django.urls import reverse
 
-from .choice_classes import (
-    FeatureChoices,
-    ProjectChoices,
-    TaskChoices,
-)
+from .choice_classes import FeatureChoices, ProjectChoices, TaskChoices
 from .validators import MyValidator
 
 User = get_user_model()
@@ -55,13 +51,12 @@ class Project(models.Model):
     )
     participants = models.ManyToManyField(
         to=User,
-        related_name="projects",
-        blank=True,
+        related_name="project_participants",
         verbose_name="Участники",
     )
     responsible = models.ForeignKey(
         to=User,
-        related_name="projects",
+        related_name="projects_responsibles",
         on_delete=models.CASCADE,
         verbose_name="Ответственный",
     )
@@ -81,7 +76,9 @@ class Project(models.Model):
         return super().save()
 
     def get_absolute_url(self):
-        return reverse(viewname='projects:update_project', kwargs={"slug": self.slug})
+        return reverse(
+            viewname="projects:update_project", kwargs={"slug": self.slug}
+        )
 
 
 class Tags(models.Model):
@@ -105,11 +102,13 @@ class Tags(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name) + "_" + f'{uuid4().hex}'
+            self.slug = slugify(self.name) + "_" + f"{uuid4().hex}"
         return super().save()
 
     def get_absolute_url(self):
-        return redirect(reverse(viewname='projects:update_tag', kwargs={"slug": self.slug}))
+        return redirect(
+            reverse(viewname="projects:update_tag", kwargs={"slug": self.slug})
+        )
 
 
 class Feature(models.Model):
@@ -136,19 +135,17 @@ class Feature(models.Model):
     )
     tags = models.ManyToManyField(
         to=Tags,
-        related_name="features",
+        related_name="feature_tags",
         verbose_name="Теги",
-        blank=True,
     )
     participants = models.ManyToManyField(
         to=User,
-        related_name="features",
+        related_name="feature_participants",
         verbose_name="Исполнители",
-        blank=True,
     )
     responsible = models.ForeignKey(
         to=User,
-        related_name="features",
+        related_name="feature_responsibles",
         on_delete=models.CASCADE,
         verbose_name="Ответственный",
     )
@@ -164,11 +161,15 @@ class Feature(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name) + "_" + f'{uuid4().hex}'
+            self.slug = slugify(self.name) + "_" + f"{uuid4().hex}"
         return super().save()
 
     def get_absolute_url(self):
-        return redirect(reverse(viewname='projects:detail_feature', kwargs={"slug": self.slug}))
+        return redirect(
+            reverse(
+                viewname="projects:detail_feature", kwargs={"slug": self.slug}
+            )
+        )
 
 
 class Task(models.Model):
@@ -180,10 +181,9 @@ class Task(models.Model):
 
     author = models.ForeignKey(
         to=User,
-        related_name="tasks",
+        related_name="task_authors",
         on_delete=models.CASCADE,
-        verbose_name='Автор',
-
+        verbose_name="Автор",
     )
 
     name = models.CharField(
@@ -210,7 +210,7 @@ class Task(models.Model):
         blank=True,
     )
     participants = models.ManyToManyField(
-        to=User, related_name="tasks", verbose_name="Исполнители"
+        to=User, related_name="task_participants", verbose_name="Исполнители"
     )
     status = models.CharField(
         max_length=20,
@@ -221,7 +221,7 @@ class Task(models.Model):
     date_execution = models.DateField(verbose_name="Дата исполнения")
     feature = models.ForeignKey(
         to=Feature,
-        related_name="tasks",
+        related_name="task_features",
         on_delete=models.CASCADE,
         verbose_name="Фича",
     )
@@ -231,8 +231,12 @@ class Task(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name) + "_" + f'{uuid4().hex}'
+            self.slug = slugify(self.name) + "_" + f"{uuid4().hex}"
         return super().save()
 
     def get_absolute_url(self):
-        return redirect(reverse(viewname='projects:update_task', kwargs={"slug": self.slug}))
+        return redirect(
+            reverse(
+                viewname="projects:update_task", kwargs={"slug": self.slug}
+            )
+        )
