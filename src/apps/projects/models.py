@@ -58,6 +58,9 @@ class Project(models.Model):
             self.slug = slugify(self.name) + "_" + str(self.pk)
         return super().save()
 
+    def get_absolute_url(self):
+        pass
+
 
 class Tags(models.Model):
     """Модель тегов"""
@@ -76,6 +79,9 @@ class Tags(models.Model):
         if not self.slug:
             self.slug = slugify(self.name) + "_" + str(self.pk)
         return super().save()
+
+    def get_absolute_url(self):
+        pass
 
 
 class Feature(models.Model):
@@ -132,6 +138,9 @@ class Feature(models.Model):
             self.slug = slugify(self.name) + "_" + str(self.pk)
         return super().save()
 
+    def get_absolute_url(self):
+        pass
+
 
 class Task(models.Model):
     """Модель задачи"""
@@ -187,3 +196,6 @@ class Task(models.Model):
         if not self.slug:
             self.slug = slugify(self.name) + "_" + str(self.pk)
         return super().save()
+
+    def get_absolute_url(self):
+        pass
