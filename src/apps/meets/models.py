@@ -57,13 +57,13 @@ class MeetParticipant(models.Model):
     """
     Промежуточная модель, связывающая миты и участников
     """
-    meet = models.ForeignKey('Meet', on_delete=models.CASCADE, verbose_name="Мит")
+    meet = models.ForeignKey("Meet", on_delete=models.CASCADE, verbose_name="Мит")
     user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name="Участник")
     status = models.CharField(max_length=10, choices=StatusChoice.choices, default=StatusChoice.PRESENT, verbose_name="Статус")
 
     class Meta:
         db_table = "meet_participants"
-        unique_together = ('meet', 'user')
+        unique_together = ("meet", "user")
         verbose_name = "Участник мита"
         verbose_name_plural = "Участники мита"
 
