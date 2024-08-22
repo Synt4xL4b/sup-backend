@@ -112,7 +112,9 @@ class CustomUser(AbstractBaseUser):
     role = models.ForeignKey(
         Role, on_delete=models.CASCADE, verbose_name="Роль"
     )
-    # permissions =
+    permissions = models.ForeignKey(
+        Permissions, on_delete=models.PROTECT, verbose_name="Права"
+    )
     is_active = models.BooleanField(
         default=False, blank=True, null=True, verbose_name="Активный статус"
     )
