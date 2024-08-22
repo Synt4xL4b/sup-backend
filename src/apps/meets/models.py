@@ -1,9 +1,9 @@
-from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
 
 from apps.meets.choice_classes import StatusChoice
 from apps.users.models import User
+from validators.validators import LettersOnlyValidator
 
 
 class Category(models.Model):
@@ -12,7 +12,10 @@ class Category(models.Model):
     """
 
     name = models.CharField(
-        max_length=100, unique=True, verbose_name="Категория"
+        max_length=100,
+        unique=True,
+        validators=[LettersOnlyValidator.get_regex_validator()],
+        verbose_name="Категория",
     )
 
     class Meta:
@@ -37,13 +40,7 @@ class Meet(models.Model):
         max_length=20,
         unique=True,
         verbose_name="Название",
-        validators=[
-            RegexValidator(
-                regex=r"^[a-zA-Zа-яА-Я\s]*$",
-                message="Допускаются только буквы латиницы и кириллицы.",
-                code="invalid_name",
-            ),
-        ],
+        validators=[LettersOnlyValidator.get_regex_validator()],
     )
     start_date = models.DateField(default=timezone.now, verbose_name="Дата")
     start_time = models.TimeField(default=timezone.now, verbose_name="Время")
@@ -83,7 +80,7 @@ class MeetParticipant(models.Model):
     )
 
     class Meta:
-        db_table = "meet_participants"
+        db_table = "user_meet"
         unique_together = ("meet", "user")
         verbose_name = "Участник мита"
         verbose_name_plural = "Участники мита"
