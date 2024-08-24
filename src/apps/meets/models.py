@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 from apps.meets.choice_classes import StatusChoice
-from apps.users.models import User
+from apps.users.models import CustomUser
 from validators.validators import LettersOnlyValidator
 
 
@@ -44,8 +44,22 @@ class Meet(models.Model):
     )
     start_date = models.DateField(default=timezone.now, verbose_name="Дата")
     start_time = models.TimeField(default=timezone.now, verbose_name="Время")
+    author = models.ForeignKey(
+        CustomUser,
+        related_name="authored_meets",
+        on_delete=models.PROTECT,
+        verbose_name="Автор",
+    )
+    responsible = models.ForeignKey(
+        CustomUser,
+        related_name="responsible_meets",
+        on_delete=models.PROTECT,
+        verbose_name="Ответственный",
+        null=True,  # По умолчанию его нет
+        blank=True,  # По умолчанию его нет
+    )
     participants = models.ManyToManyField(
-        User,
+        CustomUser,
         through="MeetParticipant",
         related_name="meets",
         verbose_name="Участники",
@@ -69,8 +83,8 @@ class MeetParticipant(models.Model):
     meet = models.ForeignKey(
         "Meet", on_delete=models.CASCADE, verbose_name="Мит"
     )
-    user = models.ForeignKey(
-        User, on_delete=models.PROTECT, verbose_name="Участник"
+    CustomUser = models.ForeignKey(
+        CustomUser, on_delete=models.PROTECT, verbose_name="Участник"
     )
     status = models.CharField(
         max_length=10,
@@ -80,8 +94,8 @@ class MeetParticipant(models.Model):
     )
 
     class Meta:
-        db_table = "user_meet"
-        unique_together = ("meet", "user")
+        db_table = "CustomUser_meet"
+        unique_together = ("meet", "CustomUser")
         verbose_name = "Участник мита"
         verbose_name_plural = "Участники мита"
 
@@ -91,5 +105,6 @@ class MeetParticipant(models.Model):
 
     def __str__(self):
         return (
-            f"{self.user.username} - {self.status_color} на {self.meet.title}"
+            f"{self.CustomUser.name} - "
+            f"{self.status_color} на {self.meet.title}"
         )
