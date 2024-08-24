@@ -56,7 +56,7 @@ class Meet(models.Model):
         on_delete=models.PROTECT,
         verbose_name="Ответственный",
         null=True,  # По умолчанию его нет
-        blank=True,  # По умолчанию его нет
+        blank=True,
     )
     participants = models.ManyToManyField(
         CustomUser,
