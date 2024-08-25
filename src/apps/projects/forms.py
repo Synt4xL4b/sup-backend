@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Feature, Project, Tags, Task
+from apps.projects.models import Feature, Project, Tags, Task
 
 
 class TagForm(forms.ModelForm):

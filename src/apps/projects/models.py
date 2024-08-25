@@ -6,23 +6,14 @@ from django.shortcuts import redirect
 from django.template.defaultfilters import slugify
 from django.urls import reverse
 
-from .choice_classes import FeatureChoices, ProjectChoices, TaskChoices
-from .validators import MyValidator
+from apps.projects.choice_classes import (
+    FeatureChoices,
+    ProjectChoices,
+    TaskChoices,
+)
+from validators.validators import ColorValidator, MyValidator
 
 User = get_user_model()
-
-
-class Color(models.Model):
-    """Модель цвета"""
-
-    class Meta:
-        verbose_name = "Цвет"
-        verbose_name_plural = "Цвета"
-
-    name = models.CharField(max_length=20, verbose_name="Название")
-
-    def __str__(self):
-        return self.name
 
 
 class Project(models.Model):
@@ -90,11 +81,10 @@ class Tags(models.Model):
 
     name = models.CharField(max_length=50, verbose_name="Название")
     slug = models.SlugField(unique=True, verbose_name="Ссылка")
-    color = models.ForeignKey(
-        to=Color,
-        on_delete=models.CASCADE,
+    color = models.IntegerField(
+        validators=[ColorValidator.get_regex_validator()],
         verbose_name="Цвет",
-        related_name="tags",
+        help_text="Введите цвет в формате 6 цифр.",
     )
 
     def __str__(self):
@@ -200,14 +190,12 @@ class Task(models.Model):
         default=0,
         verbose_name="Важность",
         null=True,
-        blank=True,
         validators=[MyValidator.get_max_value_validator()],
     )
     tags = models.ManyToManyField(
         to=Tags,
         related_name="task_tags",
         verbose_name="Теги",
-        blank=True,
     )
     participants = models.ManyToManyField(
         to=User, related_name="task_participants", verbose_name="Исполнители"

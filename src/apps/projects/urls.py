@@ -1,11 +1,9 @@
 from django.urls import path
 
-from .views import (
+from apps.projects.views import (
     FeatureCreateView,
-    FeatureDetailView,
     FeatureUpdateView,
     ProjectCreateView,
-    ProjectListView,
     ProjectUpdateView,
     TagCreateView,
     TagUpdateView,
@@ -13,7 +11,7 @@ from .views import (
     TaskUpdateView,
 )
 
-app_name = "projects"
+app_name = "apps.projects"
 
 urlpatterns = [
     # Tag views
@@ -26,17 +24,11 @@ urlpatterns = [
         "create-feature/", FeatureCreateView.as_view(), name="create_feature"
     ),
     path(
-        "feature-detail/<slug:slug>/",
-        FeatureDetailView.as_view(),
-        name="feature_detail",
-    ),
-    path(
         "update-feature/<slug:slug>/",
         FeatureUpdateView.as_view(),
         name="update_feature",
     ),
     # Project views
-    path("", ProjectListView.as_view(), name="list_projects"),
     path(
         "create-project/", ProjectCreateView.as_view(), name="create_project"
     ),
