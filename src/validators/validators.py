@@ -34,7 +34,7 @@ class LettersAndSymbolsValidator:
             code="invalid_name",
         )
 
-
+      
 class ColorValidator:
     @staticmethod
     def get_regex_validator():
