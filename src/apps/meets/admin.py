@@ -25,6 +25,6 @@ class MeetAdmin(admin.ModelAdmin):
 
 @admin.register(MeetParticipant)
 class MeetParticipantAdmin(admin.ModelAdmin):
-    list_display = ("user", "meet", "status")
-    list_display_links = ("user", "meet", "status")
-    search_fields = ("user", "meet")
+    list_display = ("CustomUser", "meet", "status")
+    list_display_links = ("CustomUser", "meet", "status")
+    search_fields = ("CustomUser", "meet")
