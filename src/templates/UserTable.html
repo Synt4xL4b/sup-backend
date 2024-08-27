@@ -5,34 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Таблица пользователей</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        .role-circle {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-        }
-        .hidden-menu {
-            display: none;
-        }
-        .visible-menu {
-            display: block;
-        }
-        /* Классы для зеленого фона и текста */
-        .bg-green-custom {
-            background-color: #327680; /* Зеленый цвет */
-        }
-        .hover:bg-green-dark {
-            background-color: #245c5e; /* Темный зеленый для наведения */
-        }
-        .text-green-custom {
-            color: #327680; /* Зеленый цвет текста */
-        }
-        .select-width {
-            width: 100px; /* Ширина выпадающего списка */
-        }
-    </style>
+    <link href="./css/add-style.css" rel="stylesheet">
+    <link href="./output.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 h-screen flex">
 
@@ -185,7 +159,7 @@
                         <td class="px-4 py-4 border-b">GitStar</td>
                         <td class="px-4 py-4 border-b">Тимлид</td>
                         <td class="px-4 py-4 border-b">
-                            <span class="role-circle bg-blue-500"></span> <!-- Пример цветного кружочка -->
+                            <span class="role-circle bg-blue-500"></span>
                             Кто-то там
                         </td>
                         <td class="px-4 py-4 border-b">12.02.2019</td>
@@ -208,7 +182,7 @@
                         <td class="px-4 py-4 border-b">GitStar</td>
                         <td class="px-4 py-4 border-b">Тимлид</td>
                         <td class="px-4 py-4 border-b">
-                            <span class="role-circle bg-blue-500"></span> <!-- Пример цветного кружочка -->
+                            <span class="role-circle bg-blue-500"></span>
                             Кто-то там
                         </td>
                         <td class="px-4 py-4 border-b">12.02.2019</td>
@@ -219,39 +193,13 @@
                             </button>
                         </td>
                     </tr>
-                    <!-- Добавьте дополнительные строки по аналогии -->
                 </tbody>
             </table>
         </div>
 
     </div>
 
-    <script>
-        // Скрипт для открытия/закрытия сайдбара
-        document.getElementById('sidebar-toggle').addEventListener('click', function () {
-            var sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('w-64');
-            var texts = sidebar.querySelectorAll('.sidebar-text');
-            texts.forEach(text => {
-                text.classList.toggle('hidden');
-            });
-        });
+    <script src="./script/script.js"></script>
 
-        // Скрипт для показа/скрытия меню таблицы
-        document.getElementById('menu-toggle').addEventListener('click', function () {
-            var menuOptions = document.getElementById('menu-options');
-            menuOptions.classList.toggle('hidden-menu');
-            menuOptions.classList.toggle('visible-menu');
-        });
-
-        // Скрипт для закрытия меню при клике вне его
-        document.addEventListener('click', function (event) {
-            var menuOptions = document.getElementById('menu-options');
-            if (!menuOptions.contains(event.target) && !document.getElementById('menu-toggle').contains(event.target)) {
-                menuOptions.classList.add('hidden-menu');
-                menuOptions.classList.remove('visible-menu');
-            }
-        });
-    </script>
 </body>
 </html>
