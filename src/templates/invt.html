@@ -5,52 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Таблица пользователей</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        a {
-            line-height: 2;
-        }
-
-        .role-circle {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-        }
-        .truncate-link {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-          
-        .hidden-menu {
-            display: none;
-        }
-        .visible-menu {
-            display: block;
-        }
-        .bg-green-custom {
-            background-color: #327680; 
-        }
-        .hover:bg-green-dark {
-            background-color: #245c5e; 
-        }
-        .text-green-custom {
-            color: #327680; 
-        }
-        .select-width {
-            width: 100px;
-        }
-        .status-active {
-            color: #38a169; 
-        }
-        .status-used {
-            color: gray; 
-        }
-        .status-expired {
-            color: #e53e3e; 
-        }
-    </style>
+    <link href="./css/add-style.css" rel="stylesheet">
+    <link href="./output.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 h-screen flex">
 
@@ -130,11 +86,10 @@
                             <a href="https://junovnet.gitbook.io/sup/tekhnicheskoe-zadanie..." class="truncate-link text-blue-600 hover:underline">https://junovnet.gitbook.io/sup/tekhnicheskoe-zadanie...</a>
                             <button class="ml-2 text-blue-600 hover:text-blue-800">
                                 <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M11.3948 1.66675H8.40168C8.17649 1.66614 7.95342 1.71319 7.74538 1.80519C7.53735 1.89719 7.34848 2.03231 7.18971 2.20273L6.78572 2.63261C6.72237 2.70421 6.67646 2.79131 6.65201 2.88627H9.10909C9.7101 2.89222 10.2843 3.15239 10.7058 3.60966C11.1272 4.06693 11.3615 4.68394 11.357 5.32529V11.4229H11.3948C11.6927 11.4171 11.9764 11.2855 12.1835 11.0569C12.3907 10.8282 12.5045 10.5213 12.4999 10.2033V2.88627C12.5045 2.5683 12.3907 2.26136 12.1835 2.03275C11.9764 1.80415 11.6927 1.67253 11.3948 1.66675Z" fill="#0C0C0C"/>
-<path d="M5.64289 7.15454V4.10576C5.64364 4.0169 5.66317 3.92936 5.70003 3.84967C5.32194 3.93385 4.97515 4.13414 4.70234 4.42589L3.08581 6.15089C2.82815 6.42761 2.64721 6.77496 2.56296 7.15454H5.64289Z" fill="#0C0C0C"/>
-<path d="M9.10909 3.80089H6.69829C6.75285 3.89216 6.78307 3.99756 6.78572 4.10577V7.15455C6.78572 7.47799 6.66531 7.78818 6.45099 8.01688C6.23667 8.24558 5.94598 8.37407 5.64289 8.37407H2.50011V12.6424C2.49553 13.0411 2.63931 13.4255 2.89993 13.7112C3.16054 13.997 3.51672 14.1608 3.89036 14.1667H9.10909C9.48278 14.1608 9.83901 13.997 10.0997 13.7113C10.3604 13.4255 10.5043 13.0411 10.4999 12.6424V5.32528C10.5043 4.92651 10.3604 4.54212 10.0997 4.25638C9.83901 3.97063 9.48278 3.80684 9.10909 3.80089Z" fill="#0C0C0C"/>
-</svg>
-
+                                    <path d="M11.3948 1.66675H8.40168C8.17649 1.66614 7.95342 1.71319 7.74538 1.80519C7.53735 1.89719 7.34848 2.03231 7.18971 2.20273L6.78572 2.63261C6.72237 2.70421 6.67646 2.79131 6.65201 2.88627H9.10909C9.7101 2.89222 10.2843 3.15239 10.7058 3.60966C11.1272 4.06693 11.3615 4.68394 11.357 5.32529V11.4229H11.3948C11.6927 11.4171 11.9764 11.2855 12.1835 11.0569C12.3907 10.8282 12.5045 10.5213 12.4999 10.2033V2.88627C12.5045 2.5683 12.3907 2.26136 12.1835 2.03275C11.9764 1.80415 11.6927 1.67253 11.3948 1.66675Z" fill="#0C0C0C"/>
+                                    <path d="M5.64289 7.15454V4.10576C5.64364 4.0169 5.66317 3.92936 5.70003 3.84967C5.32194 3.93385 4.97515 4.13414 4.70234 4.42589L3.08581 6.15089C2.82815 6.42761 2.64721 6.77496 2.56296 7.15454H5.64289Z" fill="#0C0C0C"/>
+                                    <path d="M9.10909 3.80089H6.69829C6.75285 3.89216 6.78307 3.99756 6.78572 4.10577V7.15455C6.78572 7.47799 6.66531 7.78818 6.45099 8.01688C6.23667 8.24558 5.94598 8.37407 5.64289 8.37407H2.50011V12.6424C2.49553 13.0411 2.63931 13.4255 2.89993 13.7112C3.16054 13.997 3.51672 14.1608 3.89036 14.1667H9.10909C9.48278 14.1608 9.83901 13.997 10.0997 13.7113C10.3604 13.4255 10.5043 13.0411 10.4999 12.6424V5.32528C10.5043 4.92651 10.3604 4.54212 10.0997 4.25638C9.83901 3.97063 9.48278 3.80684 9.10909 3.80089Z" fill="#0C0C0C"/>
+                                </svg>
                             </button>
                         </td>
                         <td class="px-4 py-4 border-b status-active">Активная</td>
@@ -178,32 +133,8 @@
 
     </div>
 
-    <script>
-        // Скрипт для открытия/закрытия сайдбара
-        document.getElementById('sidebar-toggle').addEventListener('click', function () {
-            var sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('w-64');
-            var texts = sidebar.querySelectorAll('.sidebar-text');
-            texts.forEach(text => {
-                text.classList.toggle('hidden');
-            });
-        });
+    
+    <script src="./script/script.js"></script>
 
-        // Скрипт для показа/скрытия меню таблицы
-        document.getElementById('menu-toggle').addEventListener('click', function () {
-            var menuOptions = document.getElementById('menu-options');
-            menuOptions.classList.toggle('hidden-menu');
-            menuOptions.classList.toggle('visible-menu');
-        });
-
-        // Скрипт для закрытия меню при клике вне его
-        document.addEventListener('click', function (event) {
-            var menuOptions = document.getElementById('menu-options');
-            if (!menuOptions.contains(event.target) && !document.getElementById('menu-toggle').contains(event.target)) {
-                menuOptions.classList.add('hidden-menu');
-                menuOptions.classList.remove('visible-menu');
-            }
-        });
-    </script>
 </body>
 </html>
