@@ -1,9 +1,11 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 
 from apps.meets.choice_classes import StatusChoice
-from apps.users.models import CustomUser
 from validators.validators import LettersOnlyValidator
+
+User = get_user_model()
 
 
 class Category(models.Model):
@@ -45,13 +47,13 @@ class Meet(models.Model):
     start_date = models.DateField(default=timezone.now, verbose_name="Дата")
     start_time = models.TimeField(default=timezone.now, verbose_name="Время")
     author = models.ForeignKey(
-        CustomUser,
+        User,
         related_name="authored_meets",
         on_delete=models.PROTECT,
         verbose_name="Автор",
     )
     responsible = models.ForeignKey(
-        CustomUser,
+        User,
         related_name="responsible_meets",
         on_delete=models.PROTECT,
         verbose_name="Ответственный",
@@ -59,7 +61,7 @@ class Meet(models.Model):
         blank=True,
     )
     participants = models.ManyToManyField(
-        CustomUser,
+        User,
         through="MeetParticipant",
         related_name="meets",
         verbose_name="Участники",
@@ -84,7 +86,7 @@ class MeetParticipant(models.Model):
         "Meet", on_delete=models.CASCADE, verbose_name="Мит"
     )
     CustomUser = models.ForeignKey(
-        CustomUser, on_delete=models.PROTECT, verbose_name="Участник"
+        User, on_delete=models.PROTECT, verbose_name="Участник"
     )
     status = models.CharField(
         max_length=10,

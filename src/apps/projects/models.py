@@ -11,7 +11,8 @@ from apps.projects.choice_classes import (
     ProjectChoices,
     TaskChoices,
 )
-from validators.validators import ColorValidator, MyValidator
+
+from validators.validators import ColorValidator, LettersOnlyValidator
 
 User = get_user_model()
 
@@ -22,13 +23,14 @@ class Project(models.Model):
     class Meta:
         verbose_name = "Проект"
         verbose_name_plural = "Проекты"
-        ordering = ["-name"]
+        ordering = ["-pk"]
+        db_table = "projects"
 
     name = models.CharField(
         max_length=20,
         verbose_name="Название",
         unique=True,
-        validators=[MyValidator.get_regex_validator()],
+        validators=[LettersOnlyValidator.get_regex_validator()],
     )
     slug = models.SlugField(unique=True, verbose_name="Ссылка")
     logo = models.ImageField(
@@ -57,13 +59,15 @@ class Project(models.Model):
         default=ProjectChoices.DISCUSSION,
         verbose_name="Статус",
     )
+    created_at = models.DateField(verbose_name="Создан", null=True, blank=True)
 
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
+        url = slugify(self.name)
         if not self.slug:
-            self.slug = slugify(self.name) + "_" + str(self.pk)
+            self.slug = f'{url}_{uuid4().hex}'
         return super().save()
 
     def get_absolute_url(self):
@@ -78,6 +82,7 @@ class Tags(models.Model):
     class Meta:
         verbose_name = "Тег"
         verbose_name_plural = "Теги"
+        db_table = "tags"
 
     name = models.CharField(max_length=50, verbose_name="Название")
     slug = models.SlugField(unique=True, verbose_name="Ссылка")
@@ -107,11 +112,12 @@ class Feature(models.Model):
     class Meta:
         verbose_name = "Фича"
         verbose_name_plural = "Фичи"
+        db_table = "features"
 
     name = models.CharField(
         max_length=50,
         verbose_name="Название",
-        validators=[MyValidator.get_regex_validator()],
+        validators=[LettersOnlyValidator.get_regex_validator()],
         unique=True,
     )
     slug = models.SlugField(unique=True, verbose_name="Ссылка")
@@ -121,7 +127,7 @@ class Feature(models.Model):
     importance = models.PositiveIntegerField(
         default=0,
         verbose_name="Важность",
-        validators=[MyValidator.get_max_value_validator()],
+        validators=[LettersOnlyValidator.get_max_value_validator()],
     )
     tags = models.ManyToManyField(
         to=Tags,
@@ -144,6 +150,12 @@ class Feature(models.Model):
         choices=FeatureChoices,
         default=FeatureChoices.NEW,
         verbose_name="Статус",
+    )
+    projects = models.ForeignKey(
+        to=Project,
+        related_name="feature_projects",
+        on_delete=models.CASCADE,
+        verbose_name="Проекты",
     )
 
     def __str__(self):
@@ -168,6 +180,7 @@ class Task(models.Model):
     class Meta:
         verbose_name = "Задача"
         verbose_name_plural = "Задачи"
+        db_table = "tasks"
 
     author = models.ForeignKey(
         to=User,
@@ -180,7 +193,7 @@ class Task(models.Model):
         max_length=50,
         verbose_name="Название",
         unique=True,
-        validators=[MyValidator.get_regex_validator()],
+        validators=[LettersOnlyValidator.get_regex_validator()],
     )
     slug = models.SlugField(unique=True, verbose_name="Ссылка")
     description = models.TextField(
@@ -190,7 +203,7 @@ class Task(models.Model):
         default=0,
         verbose_name="Важность",
         null=True,
-        validators=[MyValidator.get_max_value_validator()],
+        validators=[LettersOnlyValidator.get_max_value_validator()],
     )
     tags = models.ManyToManyField(
         to=Tags,
