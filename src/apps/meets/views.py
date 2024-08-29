@@ -1,16 +1,13 @@
-from django.views import generic
+from django.views.generic import TemplateView
 
-from apps.projects.forms import ProjectForm
+from .models import Meet, MeetParticipant
 
 
-class MeetsView(generic.CreateView):
-    """
-    Контроллер с таблицей митов
-    """
-
-    form_class = ProjectForm
+class MeetsView(TemplateView):
     template_name = "meets.html"
 
-    def form_valid(self, form):
-        form.instance.responsible = self.request.user
-        return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["participants"] = MeetParticipant.objects.all()
+        context["meets"] = Meet.objects.all()
+        return context
