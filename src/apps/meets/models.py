@@ -48,7 +48,7 @@ class Meet(models.Model):
     start_time = models.TimeField(default=timezone.now, verbose_name="Время")
     author = models.ForeignKey(
         User,
-        related_name="authored_meets",
+        related_name="author_meets",
         on_delete=models.PROTECT,
         verbose_name="Автор",
     )
@@ -86,7 +86,10 @@ class MeetParticipant(models.Model):
         Meet, on_delete=models.CASCADE, verbose_name="Мит"
     )
     custom_user = models.ForeignKey(
-        User, on_delete=models.PROTECT, verbose_name="Участник"
+        User,
+        on_delete=models.PROTECT,
+        related_name="custom_meets",
+        verbose_name="Участник",
     )
     status = models.CharField(
         max_length=10,
