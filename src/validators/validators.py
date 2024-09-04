@@ -34,12 +34,12 @@ class LettersAndSymbolsValidator:
             code="invalid_name",
         )
 
-      
+
 class ColorValidator:
     @staticmethod
     def get_regex_validator():
         return RegexValidator(
-            regex=r"^/d{6}$",
-            message="Цвет должен состоять из 6 цифр.",
+            regex=r"^#[0-9A-Fa-f]{6}$",
+            message="Цвет должен быть в формате #RRGGBB.",
             code="invalid_color",
         )

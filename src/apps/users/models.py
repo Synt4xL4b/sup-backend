@@ -1,4 +1,5 @@
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 
 from apps.users.managers import CustomUserManager
@@ -19,7 +20,7 @@ class Role(models.Model):
         verbose_name="Название",
         help_text="Введите название роли до 20 символов(допускаются только буквы кириллицы и латиницы.)",
     )
-    color = models.IntegerField(
+    color = models.CharField(
         max_length=6,
         validators=[ColorValidator.get_regex_validator()],
         verbose_name="Цвет",
@@ -29,7 +30,7 @@ class Role(models.Model):
     class Meta:
         verbose_name = "Роль"
         verbose_name_plural = "Роли"
-        ordering = -id
+        ordering = ["-id"]
 
     def __str__(self):
         return self.name
@@ -43,7 +44,7 @@ class Permissions(models.Model):
         validators=[LettersOnlyValidator.get_regex_validator()],
         verbose_name="Название",
     )
-    code = models.IntegerField(max_length=6, verbose_name="Код")
+    code = models.IntegerField(verbose_name="Код")
     description = models.TextField(
         max_length=500, null=True, blank=True, verbose_name="Описание"
     )
@@ -51,13 +52,13 @@ class Permissions(models.Model):
     class Meta:
         verbose_name = "право"
         verbose_name_plural = "права"
-        ordering = -id
+        ordering = ["-id"]
 
     def __str__(self):
         return self.name
 
 
-class CustomUser(AbstractBaseUser):
+class CustomUser(AbstractBaseUser, PermissionsMixin):
     """Модель пользователя."""
 
     name = models.CharField(
@@ -110,10 +111,10 @@ class CustomUser(AbstractBaseUser):
         upload_to="avatars/", blank=True, null=True, verbose_name="Аватар"
     )
     role = models.ForeignKey(
-        Role, on_delete=models.CASCADE, verbose_name="Роль"
+        Role, on_delete=models.CASCADE, null=True, verbose_name="Роль"
     )
     permissions = models.ForeignKey(
-        Permissions, on_delete=models.PROTECT, verbose_name="Права"
+        Permissions, on_delete=models.PROTECT, null=True, verbose_name="Права"
     )
     is_active = models.BooleanField(
         default=False, blank=True, null=True, verbose_name="Активный статус"
@@ -124,6 +125,10 @@ class CustomUser(AbstractBaseUser):
         null=True,
         verbose_name="Статус администратора",
     )
+    is_superuser = models.BooleanField(
+        default=False, verbose_name="Суперпользователь"
+    )
+    is_staff = models.BooleanField(default=False, verbose_name="Персонал")
 
     objects = CustomUserManager()
 
@@ -134,7 +139,7 @@ class CustomUser(AbstractBaseUser):
     class Meta:
         verbose_name = "пользователь"
         verbose_name_plural = "пользователи"
-        ordering = -id
+        ordering = ["-id"]
 
     def __str__(self):
         return f"{self.name} {self.surname} {self.email}"
