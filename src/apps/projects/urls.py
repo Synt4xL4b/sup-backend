@@ -1,13 +1,8 @@
 from django.urls import path
 
 from apps.projects.views import (
-    FeatureCreateView,
-    FeatureUpdateView,
     ProjectCreateView,
-    TagCreateView,
-    TagUpdateView,
-    TaskCreateView,
-    TaskUpdateView,
+    FeatureListView,
     ProjectListView
 )
 
@@ -18,4 +13,7 @@ urlpatterns = [
     path("", ProjectListView.as_view(), name="list_projects"),
     path("create-project/", ProjectCreateView.as_view(), name="create_project"),
 
+    # feature views
+
+    path("feature/", FeatureListView.as_view(), name="feature_list"),
 ]

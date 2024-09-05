@@ -6,19 +6,13 @@ from apps.projects.forms import FeatureForm
 from apps.projects.models import Feature
 
 
-class FeatureCreateView(generic.CreateView):
-    form_class = FeatureForm
-    template_name = "projects/features.html"
-    success_url = reverse_lazy("projects:index")
+class FeatureListView(generic.ListView):
+    model = Feature
+    template_name = 'projects/fitch.html'
+    context_object_name = 'features'
 
-
-class FeatureUpdateView(generic.UpdateView):
-    form_class = FeatureForm
-    template_name = "projects/features_update.html"
-
-    def get_object(self, queryset=None):
-        slug = self.kwargs.get("slug")
-        return get_object_or_404(Feature, slug=slug)
-
-    def get_success_url(self):
-        return reverse_lazy(self.object.get_absolute_url())
+    def get_context_data(self, *args,**kwargs):
+        context = super().get_context_data(*args,**kwargs)
+        context['form'] = ''
+        context['query'] = self.request.GET.get('query', '')
+        return context

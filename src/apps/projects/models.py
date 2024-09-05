@@ -86,8 +86,8 @@ class Tags(models.Model):
 
     name = models.CharField(max_length=50, verbose_name="Название")
     slug = models.SlugField(unique=True, verbose_name="Ссылка")
-    color = models.IntegerField(
-        validators=[ColorValidator.get_regex_validator()],
+    color = models.SlugField(
+        # validators=[ColorValidator.get_regex_validator()],
         verbose_name="Цвет",
         help_text="Введите цвет в формате 6 цифр.",
     )
@@ -157,6 +157,8 @@ class Feature(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Проекты",
     )
+
+    create_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата и время создания')
 
     def __str__(self):
         return self.name

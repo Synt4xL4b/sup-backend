@@ -10,7 +10,7 @@ class ProjectListView(generic.ListView):
     model = Project
     context_object_name = "projects"
     template_name = "projects/project.html"
-    paginate_by = 1
+    paginate_by = 3
 
     def get_queryset(self):
         query = self.request.GET.get('query')
@@ -32,6 +32,5 @@ class ProjectCreateView(generic.CreateView):
     success_url = reverse_lazy("projects:list_projects")
 
     def form_valid(self, form):
-        print(form.cleaned_data)
         form.instance.responsible = self.request.user
         return super().form_valid(form)
