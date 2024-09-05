@@ -271,3 +271,6 @@ a {
 .select-width {
     width: 100px; /* Ширина выпадающего списка */
 }
+.max-h-60vh {
+    max-height: 60vh;
+}
