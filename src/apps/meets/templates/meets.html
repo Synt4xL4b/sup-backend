@@ -63,10 +63,10 @@
                             </svg>
                         </button>
                     </div>
-                    <select class="border border-gray-300 rounded-lg px-4 py-2 focus:ring-teal-500 focus:border-teal-500">
-                        <option>Категория</option>
+                    <select id="category-select" class="border border-gray-300 rounded-lg px-4 py-2 focus:ring-teal-500 focus:border-teal-500">
+                        <option value="Категория">Категория</option>
                         {% for category in categories %}
-                        <option>{{ category.name }}</option>
+                        <option value="{{ category }}">{{ category.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -101,7 +101,7 @@
                         <th class="border-b py-2">Ник Telegram</th>
                         <th class="border-b py-2">Имя Telegram</th>
                     {% for meet in meets %}
-                        <th class="border-b py-2 font-semibold leading-3.5">{{ meet.start_date|date:"d.m." }}<br>{{ meet.start_date|date:"Y" }}</th>
+                        <th  data-category="{{ user.meet.category }}" class="border-b py-2 font-semibold leading-3.5">{{ meet.start_date|date:"d.m." }}<br>{{ meet.start_date|date:"Y" }}</th>
                     {% endfor %}
                     </tr>
                     </thead>
@@ -141,7 +141,7 @@
                 </table>
                 <!-- Таблица 2 -->
                 <table id="table-style-2" class="w-full table-fixed mx-auto hidden">
-                    <thead  class="bg-gray-100 text-xs">
+                    <thead class="bg-gray-100 text-xs">
                     <tr>
                         <th class="border-b py-2 px-4 text-left">ID</th>
                         <th class="border-b py-2 px-4 text-left">Название</th>
@@ -152,7 +152,7 @@
                     </thead>
                     <tbody>
                     {% for meet in meets %}
-                    <tr>
+                    <tr data-category="{{ meet.category }}">
                         <td class="border-b py-2 px-4 max-w-[50px]">{{ meet.id }}</td>
                         <td class="border-b py-2 px-4">{{ meet.title }}</td>
                         <td class="border-b py-2 px-4">{{ meet.start_date|date:"d.m.y" }}</td>
@@ -182,10 +182,11 @@
     </div>
 
     <!-- Модальное окно для Cоздать Meet -->
-    <div id="modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center hidden">
+ <div id="modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center hidden">
         <div class="bg-white p-8 rounded-lg shadow-lg w-1/2">
             <h2 class="text-xl mb-4">Cоздать Meet</h2>
-            <form>
+            <form method="POST" action="{% url 'meets:create_meet' %}">
+                {% csrf_token %}
                 <div class="mb-4">
                     <label for="meet-name" class="block text-sm font-medium text-gray-700">Название Meet*</label>
                     <input type="text" id="meet-name" class="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500 w-full">
@@ -199,7 +200,7 @@
                                 <th class="border-b py-2 px-4 text-left">Имя</th>
                                 <th class="border-b py-2 px-4 text-left">Ник telegram</th>
                                 <th class="border-b py-2 px-4 text-left">Имя telegram</th>
-                                <th class="border-b py-2 px-4 text-left">Присутствовалм</th>
+                                <th class="border-b py-2 px-4 text-left">Присутствовали</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -229,10 +230,9 @@
                     <div class="w-1/2 pr-2">
                         <label for="meet-status" class="block text-sm font-medium text-gray-700">Категория*</label>
                         <select id="meet-status" class="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500 w-full">
-                            <option value="in-discussion">Категория</option>
-                            <option value="in-development">Категория</option>
-                            <option value="in-support">Категория</option>
-                            <option value="closed">Категория</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="w-1/2 pl-2 custom-select">
