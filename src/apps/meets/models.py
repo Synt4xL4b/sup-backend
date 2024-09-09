@@ -20,6 +20,8 @@ class Category(models.Model):
         verbose_name="Категория",
     )
 
+    objects = models.Manager()
+
     class Meta:
         db_table = "category"
         verbose_name = "Категория"
@@ -67,6 +69,8 @@ class Meet(models.Model):
         verbose_name="Участники",
     )
 
+    objects = models.Manager()
+
     class Meta:
         db_table = "meets"
         verbose_name = "Мит"
@@ -97,6 +101,8 @@ class MeetParticipant(models.Model):
         default=StatusChoice.PRESENT,
         verbose_name="Статус",
     )
+
+    objects = models.Manager()
 
     class Meta:
         db_table = "custom_user_meet"
