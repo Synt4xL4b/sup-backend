@@ -143,3 +143,18 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f"{self.name} {self.surname} {self.email}"
+
+
+class CustomUserList(models.Model):
+    """Модель списка пользователей."""
+
+    user = models.OneToOneField(
+        CustomUser, on_delete=models.CASCADE, verbose_name="пользователь"
+    )
+    registration_date = models.DateField(
+        auto_now_add=True, verbose_name="дата создания"
+    )
+
+    class Meta:
+        verbose_name = "пользовательский список"
+        verbose_name_plural = "пользовательские списки"

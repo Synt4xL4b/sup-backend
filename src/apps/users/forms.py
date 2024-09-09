@@ -1,6 +1,7 @@
+from django import forms
 from django.forms import ModelForm
 
-from apps.users.models import CustomUser, Permissions, Role
+from apps.users.models import CustomUser, CustomUserList, Permissions, Role
 
 
 class CustomUserForm(ModelForm):
@@ -11,6 +12,7 @@ class CustomUserForm(ModelForm):
         fields = [
             "name",
             "surname",
+            "password",
             "email",
             "tg_name",
             "tg_nickname",
@@ -19,19 +21,43 @@ class CustomUserForm(ModelForm):
             "github_nickname",
             "role",
             "avatar",
-            "role",
             "permissions",
+        ]
+
+
+class ListUserForm(ModelForm):
+    """Форма для просмотра списка пользователей."""
+
+    role = forms.ChoiceField(
+        choices=[("Admin, admin"), ("User", "user")], required=False
+    )
+
+    class Meta:
+        model = CustomUserList
+        fields = [
+            "id",
+            "name",
+            "surname",
+            "email",
+            "tg_name",
+            "tg_nickname",
+            "google_meet_nickname",
+            "gitlab_nickname",
+            "github_nickname",
+            "registration_date",
+            "is_active",
         ]
 
 
 class RoleForm(ModelForm):
     """Форма модели Role."""
 
-    model = Role
-    fields = [
-        "name",
-        "color",
-    ]
+    class Meta:
+        model = Role
+        fields = [
+            "name",
+            "color",
+        ]
 
 
 class PermissionsForm(ModelForm):
