@@ -152,7 +152,7 @@ class CustomUserList(models.Model):
         CustomUser, on_delete=models.CASCADE, verbose_name="пользователь"
     )
     registration_date = models.DateField(
-        auto_now_add=True, verbose_name="дата создания"
+        auto_now_add=True, verbose_name="дата создания", null=True, blank=True
     )
 
     class Meta:

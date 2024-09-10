@@ -43,3 +43,13 @@ class ColorValidator:
             message="Цвет должен быть в формате #RRGGBB.",
             code="invalid_color",
         )
+
+
+class PasswordValidator:
+    @staticmethod
+    def get_regex_validator():
+        return RegexValidator(
+            regex=r"^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$",
+            message="Пароль должен содержать минимум 8 символов, включая одну заглавную букву, цифру и спец.символ",
+            code="invalid_password",
+        )

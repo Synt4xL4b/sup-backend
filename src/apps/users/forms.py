@@ -31,22 +31,13 @@ class ListUserForm(ModelForm):
     role = forms.ChoiceField(
         choices=[("Admin, admin"), ("User", "user")], required=False
     )
+    user = forms.ModelChoiceField(
+        queryset=CustomUser.objects.all(), required=True
+    )
 
     class Meta:
         model = CustomUserList
-        fields = [
-            "id",
-            "name",
-            "surname",
-            "email",
-            "tg_name",
-            "tg_nickname",
-            "google_meet_nickname",
-            "gitlab_nickname",
-            "github_nickname",
-            "registration_date",
-            "is_active",
-        ]
+        exclude = ["avatar", "permissions"]
 
 
 class RoleForm(ModelForm):
