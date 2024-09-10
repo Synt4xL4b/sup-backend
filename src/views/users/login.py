@@ -9,5 +9,5 @@ class UserLogin(TemplateView, CustomUserForm):
 
     template_name = "index.html"
     success_url = reverse_lazy("login")
-    from_class = CustomUserForm
+    form_class = CustomUserForm
     success_message = "Вы успешно вошли."
