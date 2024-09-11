@@ -20,8 +20,6 @@ class Category(models.Model):
         verbose_name="Категория",
     )
 
-    objects = models.Manager()
-
     class Meta:
         db_table = "category"
         verbose_name = "Категория"
@@ -51,16 +49,15 @@ class Meet(models.Model):
     author = models.ForeignKey(
         User,
         related_name="author_meets",
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         verbose_name="Автор",
     )
     responsible = models.ForeignKey(
         User,
         related_name="responsible_meets",
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         verbose_name="Ответственный",
-        null=True,  # По умолчанию его нет
-        blank=True,
+        default=author,
     )
     participants = models.ManyToManyField(
         User,
@@ -68,8 +65,6 @@ class Meet(models.Model):
         related_name="meets",
         verbose_name="Участники",
     )
-
-    objects = models.Manager()
 
     class Meta:
         db_table = "meets"
@@ -101,8 +96,6 @@ class MeetParticipant(models.Model):
         default=StatusChoice.PRESENT,
         verbose_name="Статус",
     )
-
-    objects = models.Manager()
 
     class Meta:
         db_table = "custom_user_meet"

@@ -182,72 +182,9 @@
     </div>
 
     <!-- Модальное окно для Cоздать Meet -->
- <div id="modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center hidden">
-        <div class="bg-white p-8 rounded-lg shadow-lg w-1/2">
-            <h2 class="text-xl mb-4">Cоздать Meet</h2>
-            <form method="POST" action="{% url 'meets:create_meet' %}">
-                {% csrf_token %}
-                <div class="mb-4">
-                    <label for="meet-name" class="block text-sm font-medium text-gray-700">Название Meet*</label>
-                    <input type="text" id="meet-name" class="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500 w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="meet-name" class="block text-sm font-medium text-gray-700 py-2">Список участников*</label>
-                    <table class="w-full mx-auto">
-                        <thead  class="bg-gray-100 text-xs">
-                            <tr>
-                                <th class="border-b py-2 px-4 text-left">ID</th>
-                                <th class="border-b py-2 px-4 text-left">Имя</th>
-                                <th class="border-b py-2 px-4 text-left">Ник telegram</th>
-                                <th class="border-b py-2 px-4 text-left">Имя telegram</th>
-                                <th class="border-b py-2 px-4 text-left">Присутствовали</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="border-b py-2 px-4">1</td>
-                                <td class="border-b py-2 px-4">Александра</td>
-                                <td class="border-b py-2 px-4">@DJWOMS</td>
-                                <td class="border-b py-2 px-4">SunshineAlex</td>
-                                <td class="border-b py-2 px-4">
-                                    <div id="container" class="w-full flex bg-gray-300 border rounded-lg border-[#666666] py-0 px-0">
-                                        <div id="item1" class="flex-item rounded-tl rounded-bl bg-transparent">
-                                            <div class="text-center text-[#1e1e1e] text-xs font-normal">Б</div>
-                                        </div>
-                                        <div id="item2" class="flex-item bg-transparent">
-                                            <div class="text-center text-[#1e1e1e] text-xs font-normal">П</div>
-                                        </div>
-                                        <div id="item3" class="flex-item rounded-tr rounded-br bg-transparent">
-                                            <div class="text-center text-[#1e1e1e] text-xs font-normal">Н</div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="mb-4 flex">
-                    <div class="w-1/2 pr-2">
-                        <label for="meet-status" class="block text-sm font-medium text-gray-700">Категория*</label>
-                        <select id="meet-status" class="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500 w-full">
-                            {% for category in categories %}
-                                <option value="{{ category.id }}">{{ category.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="w-1/2 pl-2 custom-select">
-                        <label for="meet-participants" class="block text-sm font-medium text-gray-700">Дата*</label>
-                        <input type="datetime-local" id="meet-datetime" class="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500">
-                    </div>
-                </div>
-                <div class="flex justify-end space-x-2">
-                    <button id="delete-meet" type="button" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Удалить</button>
-                    <button id="close-modal" type="button" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">Отмена</button>
-                    <button type="submit" class="bg-green-custom text-white px-4 py-2 rounded hover:bg-green-dark">Создать</button>
-                </div>
-            </form>
-        </div>
-    </div>
+ <!-- Включаем модальное окно через include -->
+    {% include 'create_meet_modal.html' %}
+
 
     <!-- Попап подтверждения удаления -->
     <div id="confirm-delete-popup" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center hidden">
@@ -260,7 +197,9 @@
         </div>
     </div>
 
-    <script src="{% static 'script/script.js' %}"></script>
+<!--    <script src="{% static 'script/script.js' %}"></script>-->
+
+    <script src="{% static 'script/create_meet.js' %}"></script>
 
 {% endblock %}
 

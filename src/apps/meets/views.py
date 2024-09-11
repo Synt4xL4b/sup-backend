@@ -1,9 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+from django.views import View
 from django.views.decorators.http import require_http_methods
 from django.views.generic import TemplateView
 
-from apps.meets.forms import MeetForm
+from apps.meets.forms import CreateMeetForm
 from apps.meets.models import Category, Meet, User
 
 
@@ -31,16 +34,40 @@ def delete_meet(request, pk):
         )
 
 
-def create_meet(request):
-    if request.method == "POST":
-        form = MeetForm(request.POST)
+class CreateMeetView(LoginRequiredMixin, View):
+    """
+    Создание мита
+    """
+
+    def get(self, request):
+        form = CreateMeetForm()
+        categories = Category.objects.all()
+        return render(
+            request,
+            "create_meet_modal.html",
+            {"form": form, "categories": categories},
+        )
+
+    def post(self, request):
+        form = CreateMeetForm(request.POST)
+
         if form.is_valid():
-            form.save()
-            return JsonResponse({"success": True})  # Возвращаем успешный ответ
-        else:
-            return JsonResponse(
-                {"success": False, "error": form.errors}, status=400
-            )  # Возвращаем ошибки
-    return JsonResponse(
-        {"success": False, "error": "Invalid request"}, status=400
-    )
+            data = form.cleaned_data
+
+            meet = Meet.objects.create(
+                author=request.user,
+                title=data["title"],
+                start_date=data["start_date"],
+                start_time=data["start_time"],
+                category=data["category"],
+                responsible=data["responsible"],
+            )
+
+            # Добавляем участников
+            meet.participants.set(data["participants"])
+
+            meet.save()
+
+            return redirect(reverse_lazy("meets:meets"))
+
+        return render(request, "create_meet_modal.html", {"form": form})
