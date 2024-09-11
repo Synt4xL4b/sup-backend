@@ -4,7 +4,7 @@ from apps.users.forms import ListUserForm
 from apps.users.models import CustomUserList
 
 
-class UserList(ListView):
+class UserListView(ListView):
     """Представление для просмотра списка пользователей с фильтрацией по ролям ."""
 
     model = CustomUserList
