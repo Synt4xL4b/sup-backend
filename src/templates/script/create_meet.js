@@ -85,3 +85,42 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const meetId = this.getAttribute('data-meet-id');
+                    if (confirm('Вы уверены, что хотите удалить эту встречу?')) {
+                        deleteMeet(meetId, this);
+                    }
+                });
+            });
+
+            function deleteMeet(meetId, buttonElement) {
+                fetch(`delete-meet/${meetId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                        'Content-Type': 'application/json'
+                    },
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Удаляем строку из DOM только после успешного удаления на сервере
+                        buttonElement.closest('tr').remove();
+                    } else {
+                        throw new Error('Ошибка при удалении встречи');
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    alert('Произошла ошибка при удалении встречи');
+                });
+            }
+        });

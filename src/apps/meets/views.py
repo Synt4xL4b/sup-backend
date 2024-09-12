@@ -1,8 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.views import View
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 
 from apps.meets.forms import CreateMeetForm
@@ -21,16 +21,14 @@ class MeetsView(LoginRequiredMixin, TemplateView):
         return context
 
 
-@require_http_methods(["DELETE"])
-def delete_meet(request, pk):
+@require_POST
+def delete_meet(request, meet_id):
     try:
-        meet = Meet.objects.get(pk=pk)
+        meet = get_object_or_404(Meet, id=meet_id)
         meet.delete()
-        return JsonResponse({"success": True})
+        return JsonResponse({"status": "success"})
     except Meet.DoesNotExist:
-        return JsonResponse(
-            {"success": False, "error": "Meet not found"}, status=404
-        )
+        return JsonResponse({"status": "Meet not found"}, status=404)
 
 
 class CreateMeetView(LoginRequiredMixin, View):

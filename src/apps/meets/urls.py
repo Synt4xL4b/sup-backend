@@ -8,4 +8,5 @@ urlpatterns = [
     path("", MeetsView.as_view(), name="meets"),
     path("delete/<int:pk>/", delete_meet, name="delete_meet"),
     path("create/", CreateMeetView.as_view(), name="create_meet"),
+    path("delete-meet/<int:meet_id>/", delete_meet, name="delete_meet"),
 ]
