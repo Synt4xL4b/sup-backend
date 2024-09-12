@@ -1,7 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
-from django.shortcuts import redirect, render
-from django.urls import reverse_lazy
+from django.shortcuts import render
 from django.views import View
 from django.views.decorators.http import require_http_methods
 from django.views.generic import TemplateView
@@ -50,7 +49,6 @@ class CreateMeetView(LoginRequiredMixin, View):
 
     def post(self, request):
         form = CreateMeetForm(request.POST)
-
         if form.is_valid():
             data = form.cleaned_data
 
@@ -68,6 +66,6 @@ class CreateMeetView(LoginRequiredMixin, View):
 
             meet.save()
 
-            return redirect(reverse_lazy("meets:meets"))
+            return JsonResponse({"status": "success"})
 
         return render(request, "create_meet_modal.html", {"form": form})
