@@ -64,6 +64,6 @@ class CreateMeetView(LoginRequiredMixin, View):
 
             meet.save()
 
-            return JsonResponse({"status": "success"})
+            return JsonResponse({"status": "success"}, status=201)
 
         return render(request, "create_meet_modal.html", {"form": form})
