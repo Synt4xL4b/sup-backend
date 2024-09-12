@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -59,8 +61,14 @@ class CreateMeetView(LoginRequiredMixin, View):
                 responsible=data["responsible"],
             )
 
+            pprint(form.cleaned_data["participant_statuses"])
             # Добавляем участников
             meet.participants.set(data["participants"])
+            for user in form.cleaned_data["participant_statuses"].items():
+                meet.participants.set([user])
+
+            for part in meet.participants.all():
+                pprint(part)
 
             meet.save()
 

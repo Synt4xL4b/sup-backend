@@ -143,3 +143,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         });
+
+// Устанавливает статус участника в мите
+function setStatus(userId, status) {
+    const container = document.getElementById(`container_${userId}`);
+    const statusInput = document.getElementById(`participant_status_${userId}`);
+    const participantCheckbox = document.getElementById(`participant_${userId}`);
+
+    // Сброс всех цветов
+    container.children[0].classList.remove('bg-blue-500');
+    container.children[1].classList.remove('bg-green-500');
+    container.children[2].classList.remove('bg-red-500');
+
+    // Установка нового цвета и статуса
+    if (status === 'PRESENT') {
+        container.children[0].classList.add('bg-blue-500');
+    } else if (status === 'WARNED') {
+        container.children[1].classList.add('bg-green-500');
+    } else if (status === 'ABSENT') {
+        container.children[2].classList.add('bg-red-500');
+    }
+
+    statusInput.value = status;
+    participantCheckbox.checked = true;
+}
