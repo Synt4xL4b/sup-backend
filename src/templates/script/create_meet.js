@@ -8,7 +8,7 @@ function showTableStyle2() {
     document.querySelector('#style2-button svg').classList.add('fill-[#40454D]');
     document.querySelector('#style1-button svg').classList.add('fill-[#FCFEFF]');
 }
-
+// переключение на первую таблицу
 document.getElementById('style1-button').addEventListener('click', function() {
     document.getElementById('table-style-1').classList.remove('hidden');
     document.getElementById('table-style-2').classList.add('hidden');
@@ -20,6 +20,7 @@ document.getElementById('style1-button').addEventListener('click', function() {
     document.querySelector('#style2-button svg').classList.add('fill-[#FCFEFF]');
 });
 
+// переключение на вторую таблицу
 document.getElementById('style2-button').addEventListener('click', function() {
     document.getElementById('table-style-1').classList.add('hidden');
     document.getElementById('table-style-2').classList.remove('hidden');
@@ -32,6 +33,7 @@ document.getElementById('style2-button').addEventListener('click', function() {
 });
 
 
+// Создание мита
 document.addEventListener('DOMContentLoaded', function () {
     const openModalButton = document.getElementById('open-modal');
     const closeModalButton = document.getElementById('close-modal');
@@ -88,22 +90,40 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-
+// Удаление мита
 document.addEventListener('DOMContentLoaded', function() {
             const deleteButtons = document.querySelectorAll('.delete-btn');
+            const confirmDeletePopup = document.getElementById('confirm-delete-popup');
+            const confirmDeleteButton = document.getElementById('confirm-delete');
+            const cancelDeleteButton = document.getElementById('cancel-delete');
             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            let currentMeetId = null;
+            let currentDeleteButton = null;
 
             deleteButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    const meetId = this.getAttribute('data-meet-id');
-                    if (confirm('Вы уверены, что хотите удалить эту встречу?')) {
-                        deleteMeet(meetId, this);
-                    }
+                    currentMeetId = this.getAttribute('data-meet-id');
+                    currentDeleteButton = this;
+                    confirmDeletePopup.classList.remove('hidden');
                 });
             });
 
+            confirmDeleteButton.addEventListener('click', function() {
+                if (currentMeetId) {
+                    deleteMeet(currentMeetId, currentDeleteButton);
+                }
+                confirmDeletePopup.classList.add('hidden');
+            });
+
+            cancelDeleteButton.addEventListener('click', function() {
+                confirmDeletePopup.classList.add('hidden');
+                currentMeetId = null;
+                currentDeleteButton = null;
+            });
+
             function deleteMeet(meetId, buttonElement) {
-                fetch(`delete-meet/${meetId}/`, {
+                fetch(`delete_meet/${meetId}/`, {
                     method: 'POST',
                     headers: {
                         'X-CSRFToken': csrfToken,
@@ -112,7 +132,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(response => {
                     if (response.ok) {
-                        // Удаляем строку из DOM только после успешного удаления на сервере
                         buttonElement.closest('tr').remove();
                     } else {
                         throw new Error('Ошибка при удалении встречи');
