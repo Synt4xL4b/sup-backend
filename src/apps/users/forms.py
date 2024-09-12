@@ -28,11 +28,17 @@ class CustomUserForm(ModelForm):
 class ListUserForm(ModelForm):
     """Форма для просмотра списка пользователей."""
 
-    role = forms.ChoiceField(
-        choices=[("Admin, admin"), ("User", "user")], required=False
+    role = forms.ModelChoiceField(
+        queryset=Role.objects.all(),
+        required=False,
+        label="Роль",
+        help_text="Выберите роль пользователя",
     )
     user = forms.ModelChoiceField(
-        queryset=CustomUser.objects.all(), required=True
+        queryset=CustomUser.objects.all(),
+        required=True,
+        label="Пользователь",
+        help_text="Выберите пользователя",
     )
 
     class Meta:
