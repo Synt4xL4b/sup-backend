@@ -135,7 +135,7 @@ a {
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  
+
 .hidden-menu {
     display: none;
 }
@@ -143,25 +143,25 @@ a {
     display: block;
 }
 .bg-green-custom {
-    background-color: #327680; 
+    background-color: #327680;
 }
 .hover:bg-green-dark {
-    background-color: #245c5e; 
+    background-color: #245c5e;
 }
 .text-green-custom {
-    color: #327680; 
+    color: #327680;
 }
 .select-width {
     width: 100px;
 }
 .status-active {
-    color: #38a169; 
+    color: #38a169;
 }
 .status-used {
-    color: gray; 
+    color: gray;
 }
 .status-expired {
-    color: #e53e3e; 
+    color: #e53e3e;
 }
 
 .hidden-menu {
@@ -270,4 +270,8 @@ a {
 }
 .select-width {
     width: 100px; /* Ширина выпадающего списка */
+}
+
+.hidden {
+    display: none;
 }

@@ -27,8 +27,8 @@
                             <td class="border-b py-2 px-4">{{ user.first_name }}</td>
                             <td class="border-b py-2 px-4">{{ user.email }}</td>
                             <td class="border-b py-2 px-4">
-                                <input type="checkbox" name="participants" value="{{ user.id }}" id="participant_{{ user.id }}">
-                                <label for="participant_{{ user.id }}">{{ user.username }}</label>
+                                <input type="checkbox" name="participants" value="{{ user.id }}" id="participant_{{ user.id }}" class="hidden">
+                                <label for="participant_{{ user.id }}" class="cursor-pointer">{{ user.username }}</label>
                             </td>
                             <td class="border-b py-2 px-4">
                                 <div id="container_{{ user.id }}" class="w-full flex bg-gray-300 border rounded-lg border-[#666666] py-0 px-0">

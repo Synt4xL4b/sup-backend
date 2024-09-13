@@ -1,5 +1,3 @@
-from pprint import pprint
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -7,8 +5,9 @@ from django.views import View
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 
+from apps.meets.choice_classes import StatusChoice
 from apps.meets.forms import CreateMeetForm
-from apps.meets.models import Category, Meet, User
+from apps.meets.models import Category, Meet, MeetParticipant, User
 
 
 class MeetsView(LoginRequiredMixin, TemplateView):
@@ -61,16 +60,18 @@ class CreateMeetView(LoginRequiredMixin, View):
                 responsible=data["responsible"],
             )
 
-            pprint(form.cleaned_data["participant_statuses"])
-            # Добавляем участников
-            meet.participants.set(data["participants"])
-            for user in form.cleaned_data["participant_statuses"].items():
-                meet.participants.set([user])
-
-            for part in meet.participants.all():
-                pprint(part)
-
             meet.save()
+
+            participant_statuses = data["participant_statuses"]
+            for user_id, status in participant_statuses.items():
+                user = User.objects.get(id=user_id)
+                if status == "ABSENT":
+                    status = StatusChoice.ABSENT
+                elif status == "WARNED":
+                    status = StatusChoice.WARNED
+                MeetParticipant.objects.create(
+                    meet=meet, custom_user=user, status=status
+                )
 
             return JsonResponse({"status": "success"}, status=201)
 
