@@ -14,7 +14,6 @@ const modal = document.getElementById('modal');
 const openModalBtn = document.getElementById('open-modal');
 const closeModalBtn = document.getElementById('close-modal');
 
-
 openModalBtn.addEventListener('click', () => {
     modal.classList.remove('hidden');
     modal.classList.add('modal-active');
@@ -35,7 +34,27 @@ window.addEventListener('click', (event) => {
     }
 });
 
+document.getElementById('style1-button').addEventListener('click', function() {
+    document.getElementById('table-style-1').classList.remove('hidden');
+    document.getElementById('table-style-2').classList.add('hidden');
+    document.getElementById('style1-button').classList.add('active-button');
+    document.getElementById('style2-button').classList.remove('active-button');
+    document.getElementById('style1-button').classList.remove('inactive-button');
+    document.getElementById('style2-button').classList.add('inactive-button');
+    document.querySelector('#style1-button svg').classList.add('fill-[#40454D]');
+    document.querySelector('#style2-button svg').classList.add('fill-[#FCFEFF]');
+});
 
+document.getElementById('style2-button').addEventListener('click', function() {
+    document.getElementById('table-style-1').classList.add('hidden');
+    document.getElementById('table-style-2').classList.remove('hidden');
+    document.getElementById('style2-button').classList.add('active-button');
+    document.getElementById('style1-button').classList.remove('active-button');
+    document.getElementById('style2-button').classList.remove('inactive-button');
+    document.getElementById('style1-button').classList.add('inactive-button');
+    document.querySelector('#style2-button svg').classList.add('fill-[#40454D]');
+    document.querySelector('#style1-button svg').classList.add('fill-[#FCFEFF]');
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     const items = document.querySelectorAll('#container > div');
@@ -111,63 +130,4 @@ confirmDeletePopup.addEventListener('click', (event) => {
     if (event.target === confirmDeletePopup) {
         confirmDeletePopup.classList.add('hidden');
     }
-});
-
-
-// Скрипт для управления модальным окном
-document.addEventListener('DOMContentLoaded', () => {
-    const newModal = document.getElementById('new-modal');
-    const openNewModalBtn = document.getElementById('open-new-modal'); // Добавьте элемент для открытия модального окна в HTML
-    const closeNewModalBtn = document.getElementById('close-new-modal');
-    
-    // Проверяем, что элементы существуют
-    if (!newModal || !openNewModalBtn || !closeNewModalBtn) {
-        console.error('Не удалось найти один или несколько элементов');
-        return;
-    }
-
-    // Функция для открытия модального окна
-    function openNewModal() {
-        newModal.classList.remove('hidden');
-        newModal.classList.add('modal-active');
-        document.body.classList.add('modal-open');
-    }
-
-    // Функция для закрытия модального окна
-    function closeNewModal() {
-        newModal.classList.add('hidden');
-        newModal.classList.remove('modal-active');
-        document.body.classList.remove('modal-open');
-    }
-
-    // Добавляем обработчики событий
-    openNewModalBtn.addEventListener('click', openNewModal);
-    closeNewModalBtn.addEventListener('click', closeNewModal);
-
-    // Закрытие модального окна при клике вне его содержимого
-    window.addEventListener('click', (event) => {
-        if (event.target === newModal) {
-            closeNewModal();
-        }
-    });
-});
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    const contentFitch = document.querySelector('.content-fitch');
-    
-    function adjustContentFitch() {
-        const viewportHeight = window.innerHeight;
-        const scrollPosition = window.scrollY;
-
-        // Устанавливаем высоту элемента, чтобы она была видна после 60% высоты экрана
-        if (scrollPosition > (0.6 * viewportHeight)) {
-            contentFitch.style.maxHeight = '100vh'; // Расширяем элемент на всю высоту экрана
-        } else {
-            contentFitch.style.maxHeight = '60vh'; // Устанавливаем высоту 60% экрана
-        }
-    }
-
-    // Добавляем обработчик события прокрутки
-    window.addEventListener('scroll', adjustContentFitch);
 });

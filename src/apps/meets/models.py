@@ -1,9 +1,11 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 
 from apps.meets.choice_classes import StatusChoice
-from apps.users.models import CustomUser
 from validators.validators import LettersOnlyValidator
+
+User = get_user_model()
 
 
 class Category(models.Model):
@@ -45,21 +47,20 @@ class Meet(models.Model):
     start_date = models.DateField(default=timezone.now, verbose_name="Дата")
     start_time = models.TimeField(default=timezone.now, verbose_name="Время")
     author = models.ForeignKey(
-        CustomUser,
-        related_name="authored_meets",
-        on_delete=models.PROTECT,
+        User,
+        related_name="author_meets",
+        on_delete=models.CASCADE,
         verbose_name="Автор",
     )
     responsible = models.ForeignKey(
-        CustomUser,
+        User,
         related_name="responsible_meets",
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         verbose_name="Ответственный",
-        null=True,  # По умолчанию его нет
-        blank=True,
+        default=author,
     )
     participants = models.ManyToManyField(
-        CustomUser,
+        User,
         through="MeetParticipant",
         related_name="meets",
         verbose_name="Участники",
@@ -81,10 +82,13 @@ class MeetParticipant(models.Model):
     """
 
     meet = models.ForeignKey(
-        "Meet", on_delete=models.CASCADE, verbose_name="Мит"
+        Meet, on_delete=models.CASCADE, verbose_name="Мит"
     )
-    CustomUser = models.ForeignKey(
-        CustomUser, on_delete=models.PROTECT, verbose_name="Участник"
+    custom_user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name="custom_meets",
+        verbose_name="Участник",
     )
     status = models.CharField(
         max_length=10,
@@ -94,8 +98,8 @@ class MeetParticipant(models.Model):
     )
 
     class Meta:
-        db_table = "CustomUser_meet"
-        unique_together = ("meet", "CustomUser")
+        db_table = "custom_user_meet"
+        unique_together = ("meet", "custom_user")
         verbose_name = "Участник мита"
         verbose_name_plural = "Участники мита"
 
@@ -105,6 +109,7 @@ class MeetParticipant(models.Model):
 
     def __str__(self):
         return (
-            f"{self.CustomUser.name} - "
+            f"{self.custom_user.first_name} - "
+            # todo изменить на  .name
             f"{self.status_color} на {self.meet.title}"
         )
